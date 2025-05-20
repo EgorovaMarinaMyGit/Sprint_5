@@ -6,6 +6,8 @@ from selenium import webdriver
 @pytest.fixture
 def driver():
     driver = webdriver.Chrome()
+    driver.maximize_window()
+    #driver.set_window_size(1280, 720)
     yield driver
     driver.quit()
 

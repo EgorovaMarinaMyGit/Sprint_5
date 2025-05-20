@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from locators.desk_locators import TestAdLocators
+from locators.desk import TestAdLocators
 
 class TestCreateAd:
 
@@ -12,14 +12,13 @@ class TestCreateAd:
     #Проверить: отображается модальное окно с заголовком «Чтобы разместить объявление, авторизуйтесь».
     
     def test_create_ad_by_unauthorized_user(self, driver):
-        driver = webdriver.Chrome() 
 
         driver.get("https://qa-desk.stand.praktikum-services.ru/")
         driver.find_element(*TestAdLocators.POST_AD_BUTTON).click()
-        driver.implicitly_wait(3)
+        WebDriverWait(driver,3).until(expected_conditions.visibility_of_element_located(TestAdLocators.TITLE_AUTHORIZATION_REQUIRED_IN_MODAL_WINDOW))
 
-        text_in_modal_window = driver.find_element(*TestAdLocators.AUTHORIZATION_REQUIRED_MODAL_WINDOW)
-        assert text_in_modal_window.text == "Чтобы разместить объявление, авторизуйтесь", f'text_in_modal_window is ---- >>>> {text_in_modal_window}'
+        text_in_modal_window = driver.find_element(*TestAdLocators.TITLE_AUTHORIZATION_REQUIRED_IN_MODAL_WINDOW)
+        assert text_in_modal_window.text == "Чтобы разместить объявление, авторизуйтесь"
 
 
 # 2. Создание объявления авторизованным пользователем
@@ -32,7 +31,6 @@ class TestCreateAd:
 #Проверить: в блоке «Мои объявления» отображается созданное объявление.
 
     def test_create_ad_by_authorized_user(self, driver, unique_email_correct, unique_title_in_ad, unique_description_in_ad):
-        driver = webdriver.Chrome()
 
         # регистрируем нового пользователя и нажимаем "Разместить объявление"
         driver.get("https://qa-desk.stand.praktikum-services.ru/")
@@ -44,7 +42,7 @@ class TestCreateAd:
         driver.find_element(*TestAdLocators.ENTER_PASSWORD_FIELD).send_keys("qwerty")
         driver.find_element(*TestAdLocators.REPEAT_PASSWORD_FIELD).send_keys("qwerty")
         driver.find_element(*TestAdLocators.CREATE_ACCOUNT_BUTTON).click()
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestAdLocators.POST_AD_BUTTON))
+        WebDriverWait(driver, 10).until(expected_conditions.visibility_of_element_located(TestAdLocators.POST_AD_BUTTON))
         driver.find_element(*TestAdLocators.POST_AD_BUTTON).click()
         WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestAdLocators.TITLE_NEW_AD))
 
@@ -76,7 +74,7 @@ class TestCreateAd:
         category_dropdown = driver.find_element(*TestAdLocators.CATEGORY_DROPDOWN) # "Категория"
         gardening_category_dropdown = driver.find_element(*TestAdLocators.GARDENING_CATEGORY_DROPDOWN)
         driver.execute_script("arguments[0].scrollIntoView();", category_dropdown) 
-        driver.find_element*(TestAdLocators.CATEGORY_DROPDOWN).click()
+        driver.find_element(*TestAdLocators.CATEGORY_DROPDOWN).click()
         driver.execute_script("arguments[0].scrollIntoView();", gardening_category_dropdown)
         driver.find_element(*TestAdLocators.GARDENING_CATEGORY_DROPDOWN).click()
 
@@ -97,10 +95,10 @@ class TestCreateAd:
         submit_button = driver.find_element(*TestAdLocators.SUBMIT_BUTTON)
         driver.execute_script("arguments[0].scrollIntoView();", submit_button) 
         driver.find_element(*TestAdLocators.SUBMIT_BUTTON).click()
-        driver.implicitly_wait(5)
+        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestAdLocators.USER_AVATAR))
 
         # скролл до аватарки пользователи и переход в профиль
-        user_avatar = driver.find_element*(TestAdLocators.USER_AVATAR)
+        user_avatar = driver.find_element(*TestAdLocators.USER_AVATAR)
         driver.execute_script("arguments[0].scrollIntoView();", user_avatar) 
         driver.find_element(*TestAdLocators.USER_AVATAR).click()
         WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestAdLocators.TITLE_MY_PROFILE))
