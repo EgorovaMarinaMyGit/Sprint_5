@@ -1,1 +1,1 @@
-# сюда записать в переменные : например ссылки
+url_doska = "https://qa-desk.stand.praktikum-services.ru/"

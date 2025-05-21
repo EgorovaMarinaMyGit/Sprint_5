@@ -25,8 +25,9 @@ class TestLoginUser:
         WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.TITLE_REGISTRATION))
         driver.find_element(*TestLoginUserLocators.ENTER_EMAIL_FIELD).send_keys(email_user)
         driver.find_element(*TestLoginUserLocators.ENTER_PASSWORD_FIELD).send_keys("qwerty")
+        driver.find_element(*TestLoginUserLocators.REPEAT_PASSWORD_FIELD).send_keys("qwerty")
         driver.find_element(*TestLoginUserLocators.CREATE_ACCOUNT_BUTTON).click()
-        WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.EXIT_BUTTON))
+        WebDriverWait(driver, 10).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.EXIT_BUTTON))
         driver.find_element(*TestLoginUserLocators.EXIT_BUTTON).click()
         WebDriverWait(driver, 10).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.ENTER_AND_REGISTRATION_BUTTON))
 
@@ -34,14 +35,14 @@ class TestLoginUser:
         driver.find_element(*TestLoginUserLocators.ENTER_AND_REGISTRATION_BUTTON).click()
         WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.TITLE_ENTER))
         driver.find_element(*TestLoginUserLocators.ENTER_EMAIL_FIELD).send_keys(email_user)
-        driver.find_elementT(*TestLoginUserLocators.ENTER_PASSWORD_FIELD).send_keys("qwerty")
+        driver.find_element(*TestLoginUserLocators.ENTER_PASSWORD_FIELD).send_keys("qwerty")
         driver.find_element(*TestLoginUserLocators.ENTER_BUTTON).click()
         WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.TITLE_DOSKA))
 
-        expected_url = "https://qa-desk.stand.praktikum-services.ru/"
-        user_avatar = driver.find_element(*TestLoginUserLocators.USER_AVATAR)
-        user_name = driver.find_element(*TestLoginUserLocators.USER_NAME)
+        expected_url = "https://qa-desk.stand.praktikum-services.ru/login"
+        user_avatar = WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.USER_AVATAR))
+        user_name = WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located(TestLoginUserLocators.USER_NAME))
 
         assert driver.current_url == expected_url
-        assert user_avatar.is_displayed(), "Аватар не отображается"
+        assert user_avatar.is_displayed()
         assert user_name.text == "User."

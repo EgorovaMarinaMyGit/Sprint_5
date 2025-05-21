@@ -5,11 +5,11 @@ from selenium import webdriver
 # для браузера + выход
 @pytest.fixture
 def driver():
-    driver = webdriver.Chrome()
-    driver.maximize_window()
+    chrome = webdriver.Chrome()
+    chrome.maximize_window()
     #driver.set_window_size(1280, 720)
-    yield driver
-    driver.quit()
+    yield chrome
+    chrome.quit()
 
 
 # генерация уникального email
@@ -27,18 +27,3 @@ def unique_email_incorrect():
     new_email_incorrect = f"{new_uuid}@@example.com"
     return new_email_incorrect
 
-
-# генерация уникального названия товара
-@pytest.fixture
-def unique_title_in_ad():
-    title_uuid = uuid.uuid4()
-    new_title_in_ad = f"{title_uuid}"
-    return new_title_in_ad
-
-
-# генерация уникального описания товара
-@pytest.fixture
-def unique_description_in_ad():
-    description_uuid = uuid.uuid4()
-    new_description_in_ad = f"{description_uuid}"
-    return new_description_in_ad
