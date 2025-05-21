@@ -1,0 +1,1 @@
+url_doska = "https://qa-desk.stand.praktikum-services.ru/"
